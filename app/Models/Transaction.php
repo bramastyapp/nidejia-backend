@@ -26,7 +26,10 @@ class Transaction extends Model
     public function setListingIdAttribute($value)
     {
         $listing = Listing::find($value);
-        $totalDays = Carbon::createFromDate($this->attributes['start_date'])->diffInDays($this->attributes['end_date']) + 1;
+        $startDate = Carbon::parse(request()->start_date);
+        $endDate = Carbon::parse(request()->end_date);
+
+        $totalDays = $startDate->diffInDays($endDate) + 1;
         $totalPrice = $listing->price_per_day * $totalDays;
         $fee = $totalPrice * 0.1;
 
